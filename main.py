@@ -4,7 +4,8 @@ import pandas as pd
 from io import StringIO
 
 # Cargar la clave de cifrado desde .streamlit/secrets.toml
-key = st.secrets["key"]
+# key = st.secrets["key"]
+key = 'WAKAxyIq2BFNDh34gdbwga-z9amcKs1A1qwtZGMMumo='
 
 # Función para desencriptar el archivo
 def decrypt_file(file_name, key):
@@ -17,18 +18,18 @@ def decrypt_file(file_name, key):
 # Desencriptar y leer el DataFrame
 decrypted_data = decrypt_file('data/data.csv', key)
 df = pd.read_csv(StringIO(decrypted_data.decode()), delimiter=';')
-
+print(df)
 # La lógica de la aplicación sigue aquí...
-st.title('Búsqueda Inscritos Carrera 4,2K Híbrida')
+st.title('Búsqueda Inscritos Carrera JARILLÓN RÍO CAUCA 2024')
 
 cedula_input = st.text_input('Ingrese el número de cédula', '')
 
 if st.button('Buscar'):
     resultado = df[df['Cedula'] == cedula_input]
     if not resultado.empty:
-        st.write(f"Nombre: {resultado.iloc[0]['Nombres']}")
-        st.write(f"Apellidos: {resultado.iloc[0]['Apellidos']}")
-        st.write(f"Género: {resultado.iloc[0]['Genero']}")
-        st.write(f"Talla de camiseta: {resultado.iloc[0]['Talla de la camisa']}")
+        st.write(f"Nombre: {resultado.iloc[0]['Nombre']}")
+        st.write(f"Apellido: {resultado.iloc[0]['Apellido']}")
+        st.write(f"Sexo: {resultado.iloc[0]['Sexo']}")
+        st.write(f"Talle: {resultado.iloc[0]['Talle']}")
     else:
         st.error('Cédula no encontrada.')
