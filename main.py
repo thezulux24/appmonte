@@ -4,8 +4,7 @@ import pandas as pd
 from io import StringIO
 
 # Cargar la clave de cifrado desde .streamlit/secrets.toml
-# key = st.secrets["key"]
-key = 'WAKAxyIq2BFNDh34gdbwga-z9amcKs1A1qwtZGMMumo='
+key = st.secrets["key"]
 
 # Función para desencriptar el archivo
 def decrypt_file(file_name, key):
