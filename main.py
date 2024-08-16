@@ -4,9 +4,7 @@ import pandas as pd
 from io import StringIO
 
 # Cargar la clave de cifrado desde .streamlit/secrets.toml
-# key = st.secrets["key"]
-key = 'WAKAxyIq2BFNDh34gdbwga-z9amcKs1A1qwtZGMMumo='
-
+key = st.secrets["key"]
 # Función para desencriptar el archivo
 def decrypt_file(file_name, key):
     f = Fernet(key)
@@ -18,7 +16,6 @@ def decrypt_file(file_name, key):
 # Desencriptar y leer el DataFrame
 decrypted_data = decrypt_file('data/data.csv', key)
 df = pd.read_csv(StringIO(decrypted_data.decode()), delimiter=';')
-print(df)
 # La lógica de la aplicación sigue aquí...
 st.title('Búsqueda Inscritos Carrera JARILLÓN RÍO CAUCA 2024')
 
