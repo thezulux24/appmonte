@@ -23,7 +23,7 @@ search_option = st.radio('Seleccione el método de búsqueda', ('Cédula', 'Tel�
 resultado = None
 
 if search_option == 'Cédula':
-    st.write('Si no encuentra con su cedula sin puntos, intente con puntos')
+    st.write('Si no encuentra con su cédula sin puntos, intente con puntos')
     cedula_input = st.text_input('Ingrese el número de cédula', '')
     if st.button('Buscar'):
         if cedula_input:
