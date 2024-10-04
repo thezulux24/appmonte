@@ -17,11 +17,13 @@ df = pd.read_csv(StringIO(decrypted_data.decode()), delimiter=';')
 
 st.title('Búsqueda Inscritos Carrera EL MORRO RÍO MELENDEZ 4,2K')
 
+
 search_option = st.radio('Seleccione el método de búsqueda', ('Cédula', 'Teléfono'))
 
 resultado = None
 
 if search_option == 'Cédula':
+    st.write('Si no encuentra con su cedula sin puntos, intente con puntos')
     cedula_input = st.text_input('Ingrese el número de cédula', '')
     if st.button('Buscar'):
         if cedula_input:
