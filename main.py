@@ -3,9 +3,7 @@ from cryptography.fernet import Fernet
 import pandas as pd
 from io import StringIO
 
-# Cargar la clave de cifrado desde .streamlit/secrets.toml
 key = st.secrets["key"]
-# Función para desencriptar el archivo
 def decrypt_file(file_name, key):
     f = Fernet(key)
     with open(file_name, "rb") as file:
@@ -17,16 +15,36 @@ def decrypt_file(file_name, key):
 decrypted_data = decrypt_file('data/data.csv', key)
 df = pd.read_csv(StringIO(decrypted_data.decode()), delimiter=';')
 # La lógica de la aplicación sigue aquí...
-st.title('Búsqueda Inscritos Carrera JARILLÓN RÍO CAUCA 2024')
+st.title('Búsqueda Inscritos Carrera EL MORRO RÍO MELENDEZ 4,2K')
 
-cedula_input = st.text_input('Ingrese el número de cédula', '')
+search_option = st.radio('Seleccione el método de búsqueda', ('Cédula', 'Teléfono'))
 
-if st.button('Buscar'):
-    resultado = df[df['Cedula'] == cedula_input]
+resultado = None
+
+if search_option == 'Cédula':
+    cedula_input = st.text_input('Ingrese el número de cédula', '')
+    if st.button('Buscar'):
+        if cedula_input:
+            resultado = df[df['Cedula'] == cedula_input]
+        else:
+            resultado = pd.DataFrame()
+elif search_option == 'Teléfono':
+    celular_input = st.text_input('Ingrese el número de teléfono', '')
+    if st.button('Buscar'):
+        if celular_input:
+            resultado = df[df['Celular'] == celular_input]
+        else:
+            resultado = pd.DataFrame()
+
+if resultado is not None:
     if not resultado.empty:
+        st.success('Te encuentras inscrito.')
+        st.toast('Te encuentras inscrito.', icon="✅")
         st.write(f"Nombre: {resultado.iloc[0]['Nombre']}")
         st.write(f"Apellido: {resultado.iloc[0]['Apellido']}")
+        st.write(f"Categoria: {resultado.iloc[0]['Categoria']}")
         st.write(f"Sexo: {resultado.iloc[0]['Sexo']}")
         st.write(f"Talle: {resultado.iloc[0]['Talle']}")
     else:
-        st.error('Cédula no encontrada.')
+        st.error('Cédula o teléfono no encontrado. No te encuentras inscrito.')
+        st.toast('Cédula o teléfono no encontrado. No te encuentras inscrito.', icon="❌")
