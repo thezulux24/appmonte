@@ -39,3 +39,5 @@ dmypy.json
 
 # Ignore local .env files
 .env
+
+secret.key
