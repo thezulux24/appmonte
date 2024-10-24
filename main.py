@@ -15,7 +15,7 @@ def decrypt_file(file_name, key):
 decrypted_data = decrypt_file('data/data.csv', key)
 df = pd.read_csv(StringIO(decrypted_data.decode()), delimiter=';')
 
-st.title('Búsqueda Inscritos Carrera Farallones Trail Run COP16 4,2K')
+st.title('Búsqueda Inscritos Carrera 4,2K Farallones Trail Run COP16 ')
 
 
 search_option = st.radio('Seleccione el método de búsqueda', ('Cédula', 'Teléfono'))
