@@ -24,14 +24,8 @@ decrypted_data = decrypt_file('data/data.csv', key)
 if decrypted_data is not None:
     try:
         df = pd.read_csv(StringIO(decrypted_data.decode()), delimiter=';')
-        # Convertir explícitamente la columna Cedula a string
         df['Cedula'] = df['Cedula'].astype(str).str.strip()
         df['Celular'] = df['Celular'].astype(str).str.strip()
-        
-        # Debug: Mostrar tipos de datos
-        st.sidebar.write("DEBUG - Tipos de datos:")
-        st.sidebar.write(df.dtypes)
-        
     except Exception as e:
         st.error(f"Error al leer datos: {str(e)}")
         st.stop()
@@ -47,8 +41,6 @@ if search_option == 'Cédula':
     if st.button('Buscar'):
         if cedula_input:
             cedula_input = str(cedula_input).strip()
-            # Debug: Mostrar valor buscado
-            st.sidebar.write(f"Buscando cédula: '{cedula_input}'")
             resultado = df[df["Cedula"].str.contains(cedula_input, case=False, na=False)]
         else:
             resultado = pd.DataFrame()
@@ -58,8 +50,6 @@ elif search_option == 'Teléfono':
     if st.button('Buscar'):
         if celular_input:
             celular_input = str(celular_input).strip()
-            # Debug: Mostrar valor buscado
-            st.sidebar.write(f"Buscando teléfono: '{celular_input}'")
             resultado = df[df['Celular'].str.contains(celular_input, case=False, na=False)]
         else:
             resultado = pd.DataFrame()
