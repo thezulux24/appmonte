@@ -15,7 +15,7 @@ def decrypt_file(file_name, key):
 decrypted_data = decrypt_file('data/data.csv', key)
 df = pd.read_csv(StringIO(decrypted_data.decode()), delimiter=';')
 
-st.title('Búsqueda Inscritos Carrera 4,2K Isla Bonita ')
+st.title('Búsqueda Inscritos Carrera  Cali 4,2K Donde Debes Estar ')
 
 
 search_option = st.radio('Seleccione el método de búsqueda', ('Cédula', 'Teléfono'))
