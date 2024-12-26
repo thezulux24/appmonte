@@ -26,7 +26,7 @@ if search_option == 'Cédula':
     cedula_input = st.text_input('Ingrese el número de cédula', '')
     if st.button('Buscar'):
         if cedula_input:
-            resultado = df[df['Cedula'] == cedula_input]
+            resultado = df[df['cedula'] == cedula_input]
         else:
             resultado = pd.DataFrame()
 elif search_option == 'Teléfono':
