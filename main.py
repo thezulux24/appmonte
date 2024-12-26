@@ -26,6 +26,10 @@ if search_option == 'Cédula':
     cedula_input = st.text_input('Ingrese el número de cédula', '')
     if st.button('Buscar'):
         if cedula_input:
+            cedula_input = str(cedula_input).strip()
+            # Debug: Mostrar valores para verificación
+            st.write("Valor buscado:", cedula_input)
+            st.write("Tipos de cédulas en DB:", df['Cedula'].dtype)
             resultado = df[df["Cedula"] == cedula_input]
         else:
             resultado = pd.DataFrame()
