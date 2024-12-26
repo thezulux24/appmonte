@@ -3,20 +3,40 @@ from cryptography.fernet import Fernet
 import pandas as pd
 from io import StringIO
 
+# Configuración de la página
+st.set_page_config(page_title="Búsqueda Inscritos Carrera", layout="centered")
+
 key = st.secrets["key"]
+
 def decrypt_file(file_name, key):
-    f = Fernet(key)
-    with open(file_name, "rb") as file:
-        encrypted_data = file.read()
-    decrypted_data = f.decrypt(encrypted_data)
-    return decrypted_data
+    try:
+        f = Fernet(key)
+        with open(file_name, "rb") as file:
+            encrypted_data = file.read()
+        decrypted_data = f.decrypt(encrypted_data)
+        return decrypted_data
+    except Exception as e:
+        st.error(f"Error al desencriptar: {str(e)}")
+        return None
 
 # Desencriptar y leer el DataFrame
 decrypted_data = decrypt_file('data/data.csv', key)
-df = pd.read_csv(StringIO(decrypted_data.decode()), delimiter=';')
+if decrypted_data is not None:
+    try:
+        df = pd.read_csv(StringIO(decrypted_data.decode()), delimiter=';')
+        # Convertir explícitamente la columna Cedula a string
+        df['Cedula'] = df['Cedula'].astype(str).str.strip()
+        df['Celular'] = df['Celular'].astype(str).str.strip()
+        
+        # Debug: Mostrar tipos de datos
+        st.sidebar.write("DEBUG - Tipos de datos:")
+        st.sidebar.write(df.dtypes)
+        
+    except Exception as e:
+        st.error(f"Error al leer datos: {str(e)}")
+        st.stop()
 
-st.title('Búsqueda Inscritos Carrera  Cali 4,2K Donde Debes Estar ')
-
+st.title('Búsqueda Inscritos Carrera Cali 4,2K Donde Debes Estar')
 
 search_option = st.radio('Seleccione el método de búsqueda', ('Cédula', 'Teléfono'))
 
@@ -26,14 +46,21 @@ if search_option == 'Cédula':
     cedula_input = st.text_input('Ingrese el número de cédula', '')
     if st.button('Buscar'):
         if cedula_input:
-            resultado = df[df["Cedula"] == cedula_input]
+            cedula_input = str(cedula_input).strip()
+            # Debug: Mostrar valor buscado
+            st.sidebar.write(f"Buscando cédula: '{cedula_input}'")
+            resultado = df[df["Cedula"].str.contains(cedula_input, case=False, na=False)]
         else:
             resultado = pd.DataFrame()
+
 elif search_option == 'Teléfono':
     celular_input = st.text_input('Ingrese el número de teléfono', '')
     if st.button('Buscar'):
         if celular_input:
-            resultado = df[df['Celular'] == celular_input]
+            celular_input = str(celular_input).strip()
+            # Debug: Mostrar valor buscado
+            st.sidebar.write(f"Buscando teléfono: '{celular_input}'")
+            resultado = df[df['Celular'].str.contains(celular_input, case=False, na=False)]
         else:
             resultado = pd.DataFrame()
 
